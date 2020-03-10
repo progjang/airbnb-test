@@ -9,7 +9,16 @@ class Conversation(core_models.TimeStampedModel):
     participants = models.ManyToManyField("users.User", blank=True)
 
     def __str__(self):
-        return str(self.created_at)
+        users_list = []
+        for user in self.participants.all():
+            users_list.append(user.username)
+
+        users = ", ".join(users_list)
+
+        return users
+
+    def count_users(self):
+        return self.participants.count()
 
 
 class Message(core_models.TimeStampedModel):
@@ -25,4 +34,7 @@ class Message(core_models.TimeStampedModel):
     )
 
     def __str__(self):
-        return f"{self.writer} says: {self.text}"
+        return f"{self.writer} says: {self.message}"
+
+    def count_users(self):
+        return self.conversation.count_users()

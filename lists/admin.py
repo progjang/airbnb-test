@@ -7,4 +7,7 @@ class ListAdmin(admin.ModelAdmin):
 
     """ List Admin Definition """
 
-    pass
+    list_display = ("__str__", "user", "count_rooms")
+    search_fields = ("name",)
+
+    filter_horizontal = ("rooms",)
