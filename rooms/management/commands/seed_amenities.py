@@ -19,7 +19,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         number = options.get("number")
 
-        list_amenities = [
+        list_facilities = [
             "Kitchen",
             "Shampoo",
             "Heating",
