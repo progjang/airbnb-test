@@ -9,7 +9,7 @@ from django.contrib.auth.admin import UserAdmin
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
-            "ucstom Profile",
+            "custom Profile",
             {
                 "fields": (
                     "avatar",
@@ -22,4 +22,18 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
+    )
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_active",
+        "language",
+        "currency",
+        "superhost",
+        "is_staff",
+        "is_superuser",
+        "email_verified",
+        "email_secret",
     )
