@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, reverse
 from django.views.generic import FormView
 from . import forms, models
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 
@@ -117,7 +118,9 @@ def kakao_callback(request):
                     f"{nickname}-avatar.jpg", ContentFile(photo_request.content)
                 )
         login(request, user)
+        messages.success(request, f"Welcome back {user.first_name}")
         return redirect(reverse("core:home"))
 
-    except KakaoException:
+    except KakaoException as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))

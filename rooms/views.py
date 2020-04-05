@@ -11,7 +11,7 @@ class RoomDetail(DetailView):
 
 class HomeView(ListView):
     model = models.Room
-    paginate_by = 10
+    paginate_by = 12
     paginate_orphans = 5
     page_kwargs = "page"
     ordering = "created_at"
@@ -81,4 +81,3 @@ def search(request):
         form = forms.SearchForm()
 
     return render(request, "rooms/search.html", {"form": form})
-
