@@ -1,7 +1,8 @@
 import os
 import requests
 from django.shortcuts import render, redirect, reverse
-from django.views.generic import FormView
+from django.contrib.auth.views import PasswordChangeView
+from django.views.generic import FormView, DetailView, UpdateView
 from . import forms, models
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -124,3 +125,59 @@ def kakao_callback(request):
     except KakaoException as e:
         messages.error(request, e)
         return redirect(reverse("users:login"))
+
+
+class UserProfileView(DetailView):
+
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class UpdateUserProfileView(UpdateView):
+
+    model = models.User
+    template_name = "users/update-profile.html"
+    fields = (
+        "email",
+        "first_name",
+        "last_name",
+        "bio",
+        "gender",
+        "birthdate",
+        "currency",
+        "language",
+    )
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        self.object.username = email
+        self.object.save()
+        return super().form_valid(form)
+
+
+class UpdatePasswordView(PasswordChangeView):
+    template_name = "users/update-password.html"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
+        form.fields["new_password1"].widget.attrs = {"placeholder": "New password"}
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "Confirm new password"
+        }
+        return form
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
+
+
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except KeyError:
+        request.session["is_hosting"] = True
+
+    return redirect(reverse("core:home"))

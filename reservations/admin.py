@@ -17,3 +17,7 @@ class ReservationAdmin(admin.ModelAdmin):
         "is_finished",
     )
 
+
+@admin.register(models.BookedDay)
+class BookedDayAdmin(admin.ModelAdmin):
+    list_display = ("date", "reservation")

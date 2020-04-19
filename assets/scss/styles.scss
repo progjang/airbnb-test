@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+    justify-items: center;
+}
 
 .search-box{
     transition: box-shadow 0.3s linear;
@@ -17,23 +23,52 @@
 }
 
 .btn {
-    @apply font-light text-center text-lg w-full rounded-sm py-5;
+    @apply text-center rounded-sm py-5 font-light text-lg w-full;
+    &.btn--small {
+        @apply py-3 rounded-lg;
+    }
 }
 
-input {
-    @apply btn text-left border border-gray-600 px-5;
+.btn-link {
+    @apply text-center py-3 rounded-lg font-light text-lg w-full text-white bg-red-500;
+}
+
+.border-section {
+    @apply border-b border-gray-400 pb-5 mt-5;
+}
+
+input,
+textarea,
+select {
+    @apply rounded-sm py-2 px-2 font-light text-lg w-full text-left border border-gray-600;
     &:focus{
         @apply outline-none border-teal-500;
     }
 }
 
-form .input{
-    @apply mb-3;
-    &.has_error {
-        input {
-            @apply bg-red-200;
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+select {
+    height: 60px;
+}
+
+form {
+    .input{
+        @apply mb-3 w-full;
+        &.has_error {
+            input {
+                @apply bg-red-200 border-gray-600;
+                &:focus{
+                    @apply border-gray-600
+                }
+            }
         }
     }
 }
+
+
 
 @tailwind utilities;
